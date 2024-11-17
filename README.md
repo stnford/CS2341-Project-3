@@ -15,26 +15,39 @@ Enter product ID's seperated by ',' or type 'exit' to quit:
 Search Results:
 
 ID: 3e19b6266cb28453080389529d5fbdf8
+
     Name: Sterling Home Round Chair Side chest of drawers, Multicolor
+    
     Category: Home & Kitchen | Furniture | Kids' Furniture | Nightstands
+    
     Price: $440.26
 
 ID: 8a8338081f5e267402c5eb36f07d5bab
+
     Name: Licenses Products Sublime Drunk Clown Sticker
+    
     Category: Toys & Games | Arts & Crafts | Stickers
+    
     Price: $4.59
 
 ID: 7bf79367acb42d2bde05d9ae8b9538a9
+
     Name: Manhattan Toy Natural Historian Opposites Padded Cover Baby and Toddler Board Book
+    
     Category: Toys & Games | Baby & Toddler Toys
+    
     Price: $7.99
 
 Insertions:
 
 Inserted new product:
+
 ID: dummyID
+
     Name: Wacky Gizmo
+    
     Category: Cool | Awesome | Radical
+    
     Price: $12,345.67
 
 Error: Product with ID 2bb94aefc3467ed83860e0e2712d5f10 already exists.
