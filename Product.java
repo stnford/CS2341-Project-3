@@ -13,7 +13,7 @@ public class Product {
 
     @Override
     public String toString() {
-        return "    Name: " + name + "\n    Category: " + category + "\n    Price: " + price;
+        return "ID: " + uniqId + "\n    Name: " + name + "\n    Category: " + category + "\n    Price: " + price;
     }
 
 }
