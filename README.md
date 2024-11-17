@@ -1,2 +1,1 @@
-This code will require Javas standard library:
-https://introcs.cs.princeton.edu/java/stdlib/
+This code uses javas buffer reader to read amazon-product-data.csv directly. On the eight line of the main class the file path is set up as src/amazon-product-data.csv so please run the program with the data file in the src folder. 
