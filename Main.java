@@ -1,74 +1,100 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Scanner;
+
 public class Main {
-
     public static void main(String[] args) {
-        int lineCount = 0;
-        boolean isFirstLine = true;  // Skip the first line of the file
+        String amazonData = "src/amazon-product-data.csv";
+        RedBlackTree tree = new RedBlackTree();
+        boolean isFirstLine = true;
 
-        // Process up to 100 lines from StdIn
-        while (!StdIn.isEmpty() && lineCount < 1000) {
-            String line = StdIn.readLine();
+        // Read and insert products from the CSV file instead of StdIn
+        try (BufferedReader br = new BufferedReader(new FileReader(amazonData))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                // Skip the header line
+                if (isFirstLine) {
+                    isFirstLine = false;
+                    continue;
+                }
 
-            // Skip the first line (header)
-            if (isFirstLine) {
-                isFirstLine = false;
-                continue;
+                Product product = parseProduct(line);
+                if (product != null) {
+                    tree.insert(product);
+                }
             }
+        } catch (IOException e) {
+            System.err.println("Error reading CSV file: " + e.getMessage());
+            return;
+        }
 
-            Product product = parseProduct(line);
-            if (product != null) {
-                System.out.println(product);
-                lineCount++;
+        // Prompt for user input to search for product IDs
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter product ID's seperated by ',' or type 'exit' to quit: ");
+
+        // Read user input and split it into individual IDs
+        String userInput = scanner.nextLine().trim();
+        if (!userInput.equalsIgnoreCase("exit")) {
+            String[] searchIds = userInput.split(",");
+            System.out.println("\nSearch Results:\n");
+
+            for (String searchId : searchIds) {
+                searchId = searchId.trim(); // Trim any extra whitespace
+                Product result = tree.search(searchId);
+                if (result != null) {
+                    System.out.println("ID: " + searchId + "\n" + result);
+                } else {
+                    System.out.println("Product with ID '" + searchId + "' not found.");
+                }
             }
         }
+
+        // Insertions (testing purposes)
+        System.out.println("\nInsertions:");
+        Product newProduct = new Product("dummyID", "Wacky Gizmo", "Cool | Awesome | Radical", "12345.67");
+        Product duplicateProduct = new Product("2bb94aefc3467ed83860e0e2712d5f10", "Duplicate Product", "Duplicate Category", "49.99");
+
+        tree.insert(newProduct);
+        System.out.println("\nInserted new product:\n" + newProduct);
+        tree.insert(duplicateProduct); // Should trigger duplicate error
+
+        scanner.close();
     }
 
-    // parseProduct should be outside the main method
     public static Product parseProduct(String line) {
-        String uniqId = null, name = null, category = null;
-        double price = 0.0;
+        String uniqId = null;
+        String name = null;
+        String category = null;
+        String price = "0.0";
         StringBuilder field = new StringBuilder();
         int fieldIndex = 0;
         boolean insideQuote = false;
 
-        // Traverse each character to split fields manually
         for (int i = 0; i < line.length(); i++) {
             char c = line.charAt(i);
 
             if (c == '"') {
-                insideQuote = !insideQuote; // Toggle insideQuote state
+                insideQuote = !insideQuote;
             } else if (c == ',' && !insideQuote) {
-                // End of field when outside quotes
-                if (fieldIndex == 0) {
-                    uniqId = field.toString().trim();
-                } else if (fieldIndex == 1) {
-                    name = field.toString().trim();
-                } else if (fieldIndex == 2) {
-                    category = field.toString().trim();
-                }
+                if (fieldIndex == 0) uniqId = field.toString().trim();
+                else if (fieldIndex == 1) name = field.toString().trim();
+                else if (fieldIndex == 2) category = field.toString().trim();
+
                 fieldIndex++;
-                field.setLength(0); // Clear field for next value
+                field.setLength(0);
             } else {
                 field.append(c);
             }
         }
 
-        // Last field after loop
         if (fieldIndex == 3 || (fieldIndex == 2 && !field.toString().isEmpty())) {
-            String priceString = field.toString().replace("$", "").trim();
+            String priceString = field.toString().trim();
+            price = priceString;
             int dashIndex = priceString.indexOf("-");
-            if (dashIndex != -1) {
-                priceString = priceString.substring(0, dashIndex).trim(); // Take lower price in range
-            }
-            try {
-                price = Double.parseDouble(priceString);
-            } catch (NumberFormatException e) {
-                System.out.println("Invalid price format for product: " + uniqId);
-                price = 0.0; // Default to 0.0 if unparseable
-            }
         }
 
-        // Assign missing fields if any
-        if (uniqId == null || name == null) return null; // Invalid essential fields
+        if (uniqId == null || name == null) return null;
         if (category == null) category = "";
         return new Product(uniqId, name, category, price);
     }
