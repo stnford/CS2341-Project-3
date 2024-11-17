@@ -37,13 +37,13 @@ public class Main {
         String userInput = scanner.nextLine().trim();
         if (!userInput.equalsIgnoreCase("exit")) {
             String[] searchIds = userInput.split(",");
-            System.out.println("\nSearch Results:\n");
+            System.out.println("\nSearch Results:");
 
             for (String searchId : searchIds) {
                 searchId = searchId.trim(); // Trim any extra whitespace
                 Product result = tree.search(searchId);
                 if (result != null) {
-                    System.out.println("ID: " + searchId + "\n" + result);
+                    System.out.println("\n" + result);
                 } else {
                     System.out.println("Product with ID '" + searchId + "' not found.");
                 }
@@ -52,8 +52,8 @@ public class Main {
 
         // Insertions (testing purposes)
         System.out.println("\nInsertions:");
-        Product newProduct = new Product("dummyID", "Wacky Gizmo", "Cool | Awesome | Radical", "12345.67");
-        Product duplicateProduct = new Product("2bb94aefc3467ed83860e0e2712d5f10", "Duplicate Product", "Duplicate Category", "49.99");
+        Product newProduct = new Product("dummyID", "Wacky Gizmo", "Cool | Awesome | Radical", "$12,345.67");
+        Product duplicateProduct = new Product("2bb94aefc3467ed83860e0e2712d5f10", "Duplicate Product", "Duplicate Category", "$49.99");
 
         tree.insert(newProduct);
         System.out.println("\nInserted new product:\n" + newProduct);
