@@ -2,9 +2,9 @@ public class Product {
     public String uniqId;
     public String name;
     public String category;
-    public double price;
+    public String price;
 
-    public Product(String uniqId, String name, String category, double price) {
+    public Product(String uniqId, String name, String category, String price) {
         this.uniqId = uniqId;
         this.name = name;
         this.category = category;
@@ -13,7 +13,7 @@ public class Product {
 
     @Override
     public String toString() {
-        return "Name: " + name + "\n    Category: " + category + "\n    Price: $" + price;
+        return "    Name: " + name + "\n    Category: " + category + "\n    Price: " + price;
     }
 
 }
